@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package whisk.x.recipe.v1;
+
+service RecipeAPI {
+  rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse);
+}
+
+
+
+message GetRecipeRequest {
+  message GetRecipeMask {
+    repeated string paths = 1;
+  }
+
+  // optional gets translated to [fieldId, fieldName, fieldType, isOptional ? 0 : 1]
+  // https://my.whisk.com/api/grpc-web/whisk.x.recipe.v1.RecipeAPI/GetRecipe
+  string recipeId = 1;
+  optional GetRecipeMask recipeMask = 2;
+}
+
+
+
+
+message GetRecipeResponse {
+    message Ingredient {
+        string text = 1;
+        string group = 2;
+        string id = 3;
+    }
+
+    message InstructionStep  {
+        string text = 1;
+        string group = 2;
+        // optional Picture image = 4;
+        // optional Analysis analysis = 3;
+    }
+
+    message Instruction {
+        repeated InstructionStep steps = 1;
+    }
+
+    message SourceImage {
+        // optional SourceImageOriginal sourceImageOriginal = 1;
+        // optional Responsive picture = 2;
+    }
+
+    message Source {
+        string name = 1;
+        string displayName = 2;
+        string sourceRecipeUrl = 3;
+        optional SourceImage image = 4;
+    }
+
+    message Durations {
+        int32 cookTime = 1;
+        int32 prepTime = 2;
+    }
+
+
+    // {
+    //     id: 'd936cd21131f07695ef6c8d8e2aae7e60f88b77b:0:0',
+    //     sourceText: '250g chicken breast',
+    //     rawId: '0',
+    //     group: ''
+    //   },
+    message NormalizedIngredient {
+        string id = 1;
+        string rawId = 6;
+        // optional NormalizedAnlysis analysis = 2;
+        // optional string analysis = 2;
+        string sourceText = 3;
+        string group = 4;
+        // optional NormalizedNutrition nutrition = 5;
+        // optional string nutrition = 5;
+    }
+
+    // message Publisher {
+    //     string name = 1;
+    //     string displayName = 2;
+    //     string sourceRecipeUrl = 3;
+    //     string imageUrl = 4;
+    // }
+
+    // message RecipeAuthor  {
+    //     Publisher publisher = 1;
+    //     // Creator user = 2;
+    // }
+
+    message Recipe {
+        string id = 1;
+        string name = 2;
+        string description = 3;
+        repeated Ingredient ingredients = 4;
+        optional Instruction instructions = 5;
+        repeated SourceImage images = 6;
+        optional Source source = 8;
+        int32 servings = 9;
+        optional Durations durations = 10;
+        repeated NormalizedIngredient normalizedIngredients = 11;
+        // optional Nutrition nutrition = 12;
+        // int32 servingsScaled = 13;
+        // optional Saved saved = 15;
+        // string language = 16;
+        // optional Saved user = 17;
+        // bool isFlagged = 18;
+        // optional CommunitySharing communitySharing = 21;
+        // optional ContentPolicyViolation contentPolicyViolation = 19;
+        // int32 saveCount = 20;
+        // optional Brand brand = 22;
+        // repeated PromotedIngredient promotedIngredients = 23;
+        // optional Reviews reviews = 24;
+        // optional Labels labels = 25;
+        // optional Publicity publicity = 26;
+        // optional RecipeAuthor recipeAuthor = 27;
+        int64 updatedAt = 28;
+        // optional Parent parent = 29;
+        // optional Permissions permissions = 30;
+        // repeated Video videos = 31;
+        // optional Creator creator = 32;
+    }
+  Recipe recipe = 1;
+}

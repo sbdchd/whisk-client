@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package whisk.x.user.v1;
+
+service AuthAPI {
+  // https://login.whisk.com/api/grpc-web/whisk.x.user.v1.AuthAPI/CreateAnonymousUser
+  rpc CreateAnonymousUser(CreateAnonymousUserRequest) returns (CreateAnonymousUserResponse);
+}
+
+message CreateAnonymousUserRequest {
+  message LocationParams {
+    string country = 1;
+  }
+  message UserParams {
+    string language = 1;
+    oneof location {
+      LocationParams locationParams = 2;
+      bool locate = 3;
+    }
+  }
+  optional UserParams userParams = 1;
+}
+
+message CreateAnonymousUserResponse {
+  message Token {
+    string accessToken = 1;
+    string tokenType = 2;
+    int64 expiresIn = 3;
+    string refreshToken = 4;
+    int64 refreshTokenExpiresIn = 5;
+  }
+
+  message Timestamp {
+    int64 seconds = 1;
+    int32 nanos = 2;
+  }
+
+  message User {
+    string id = 1;
+    // repeated Identity identities = 2;
+    bool hasPassword = 3;
+    // optional Settings settings = 4;
+    // repeated enum apps = 5;
+    optional Timestamp createdTime = 6;
+  }
+
+  message Authenticated {
+    optional Token token = 1;
+    optional User user = 2;
+    bool isNewUser = 3;
+    string resetPasswordCode = 4;
+    string unsubscribeToken = 5;
+  }
+  optional Authenticated authenticated = 1;
+}

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -eux
+
+export PROTO_DIR=src/protos
+export PROTO_OUT=src/out
+
+node node_modules/@whisklabs/grpc/dist/cjs/generator/cli.js
+
+./node_modules/.bin/esbuild src/main.ts --bundle --minify --sourcemap --platform=node --target=node16 --outfile=build/main.js

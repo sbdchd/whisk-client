@@ -16,4 +16,9 @@ s/build
 s/run
 ```
 
+## notes
+
+The schema was extracted from the compiled protobuf output in [Whisk's JS chunks][1].
+
 [0]: https://github.com/whisklabs/grpc-ts
+[1]: https://web.archive.org/web/20230202031301/https://cdn.whisk.com/web/web-app/production/assets/main-c8d4e63e.4af129447c71efadc18e.js
